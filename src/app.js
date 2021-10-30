@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { json, urlencoded } = require('express');
-const path = require('path');
+const path = require("path");
 const express = require('express');
 const mongoose = require('mongoose');
 require('./config/db-sql');
