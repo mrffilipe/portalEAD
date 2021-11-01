@@ -3,10 +3,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = mongoose.model('User');
 
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
     try {
 
         var { name, lastName, email, password, admin } = req.body;
+
+        if (!name) return next()
 
         if (await User.findOne({ email: email }))
             return res.status(400).send('User already exists!');
