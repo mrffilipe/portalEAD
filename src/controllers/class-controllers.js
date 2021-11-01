@@ -1,10 +1,10 @@
 const knex = require('../config/db-sql');
 
-exports.create = async (req, res) => {
+exports.store = async (req, res) => {
     try {
-        const { id } = req.params;
-        const userId = await req.userData.id;
-        const { contentTitle } = req.body;
+        let { id } = req.params;
+        let userId = await req.userData.id;
+        let { contentTitle, description } = req.body;
 
         if (await knex('classlist').where({ id: id, _idUser: userId }) == 0) return res.status(500).send({ message: 'Class list not found!' });
 
@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
     }
 }
 
-exports.list = async (req, res) => {
+exports.index = async (req, res) => {
     try {
         const { id } = req.params;
         const userId = await req.userData.id;

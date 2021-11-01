@@ -1,34 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const User = mongoose.model('User');
-
-exports.register = async (req, res, next) => {
-    try {
-
-        var { name, lastName, email, password, admin } = req.body;
-
-        if (!name) return next()
-
-        if (await User.findOne({ email: email }))
-            return res.status(400).send('User already exists!');
-
-        password = await bcrypt.hash(password, 10);
-
-        await User.create({
-            name,
-            lastName,
-            email,
-            password,
-            admin
-        });
-
-        return res.status(201).send('User created!');
-    } catch (error) {
-        console.log(error);
-        return res.status(400).send('User not created!');
-    }
-}
 
 const generateToken = (params = {}) => {
     return jwt.sign(params, process.env.secretKey, {
@@ -36,11 +10,12 @@ const generateToken = (params = {}) => {
     });
 }
 
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
+    if (req.params.opt == 'register') return next();
     try {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
 
-        const user = await User.findOne({ email }).select('+password');
+        let user = await User.findOne({ email }).select('+password');
         if (!user)
             return res.status(400).send({ error: 'User not found!' });
 
@@ -58,6 +33,30 @@ exports.login = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(400).send('Login failed!');
+        return res.status(400).send({ error: 'Login failed!' });
+    }
+}
+
+exports.register = async (req, res) => {
+    try {
+        let { name, lastName, email, password, admin } = req.body;
+
+        if (await User.findOne({ email: email }))
+            return res.status(400).send('User already exists!');
+
+        password = await bcrypt.hash(password, 10);
+
+        await User.create({
+            name,
+            lastName,
+            email,
+            password,
+            admin
+        });
+
+        return res.status(201).send({ message: 'User registered!' });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).send({ error: 'User not created!' });
     }
 }

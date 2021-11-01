@@ -41,22 +41,12 @@ mongoose.connect(process.env.connectMongoDB, {
 const userModel = require('./models/user-model');
 
 /* Import routes */
-/*const userRoute = require('./routes/user-route');
-const myAccountRoute = require('./routes/myAccount-route');
-const classListRoute = require('./routes/classList-route');
-const classRoute = require('./routes/class-route');
-const sendArchiveRoute = require('./routes/sendArchives-route');*/
+const noAuthRoutes = require('./routes/noAuthRoutes');
 const authRoutes = require('./routes/authRoutes');
-const noAuthRoute = require('./routes/noAuthRoute');
 
 /* Use routes */
-/*app.use('/test', (req, res) => res.send('ok'));
-app.use('/auth', userRoute);
-app.use('/myAccount', myAccountRoute);
-app.use('/classlist', classListRoute);
-app.use('/class', classRoute);
-app.use('/send', sendArchiveRoute);*/
-app.use(noAuthRoute);
+app.use('/test', (req, res) => res.send('ok'));
+app.use(noAuthRoutes);
 app.use(require('./middlewares/auth'));
 app.use(authRoutes);
 
