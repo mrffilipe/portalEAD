@@ -2,13 +2,13 @@ const knex = require('../config/db-sql');
 
 exports.store = async (req, res) => {
     try {
-        let { id } = req.params;
+        let { idmixclass } = req.params;
         let userId = await req.userData.id;
         let { contentTitle, description } = req.body;
 
-        if (await knex('classlist').where({ id: id, _idUser: userId }) == 0) return res.status(500).send({ message: 'Class list not found!' });
+        if (await knex('classlist').where({ id: idmixclass, _idUser: userId }) == 0) return res.status(500).send({ message: 'Class list not found!' });
 
-        await knex('class').insert({ classList_id: id, pathVideo: undefined, contentTitle: contentTitle });
+        await knex('class').insert({ classList_id: idmixclass, pathVideo: undefined, contentTitle: contentTitle });
 
         return res.status(201).send({ message: 'Class created!' });
     } catch (error) {
@@ -19,12 +19,12 @@ exports.store = async (req, res) => {
 
 exports.index = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { idmixclass } = req.params;
         const userId = await req.userData.id;
 
-        if (await knex('classlist').where({ id: id, _idUser: userId }) == 0) return res.status(500).send({ message: 'Class list not found!' });
+        if (await knex('classlist').where({ id: idmixclass, _idUser: userId }) == 0) return res.status(500).send({ message: 'Class list not found!' });
 
-        const list = await knex('class').where({ classList_id: id });
+        const list = await knex('class').where({ classList_id: idmixclass });
 
         if (list == 0) return res.status(500).send({ message: 'Classes not found!' });
 
@@ -37,15 +37,15 @@ exports.index = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const { idList, idClass } = req.params;
+        const { idmixclass, idclass } = req.params;
         const userId = await req.userData.id;
         const { contentTitle } = req.body;
 
-        if (await knex('classlist').where({ 'id': idList, '_idUser': userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
+        if (await knex('classlist').where({ id: idmixclass, _idUser: userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
 
-        if (await knex('class').where({ 'id': idClass }) == 0) return res.status(500).send({ message: 'No class records were found!' });
+        if (await knex('class').where({ id: idclass }) == 0) return res.status(500).send({ message: 'No class records were found!' });
 
-        await knex('class').where({ 'id': idClass }).update({ pathVideo: undefined, contentTitle: contentTitle });
+        await knex('class').where({ id: idclass }).update({ pathVideo: undefined, contentTitle: contentTitle });
 
         return res.status(201).send({ message: 'Class updated!' });
     } catch (error) {
@@ -56,14 +56,14 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const { idList, idClass } = req.params;
+        const { idmixclass, idclass } = req.params;
         const userId = await req.userData.id;
 
-        if (await knex('classlist').where({ 'id': idList, '_idUser': userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
+        if (await knex('classlist').where({ id: idmixclass, _idUser: userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
 
-        if (await knex('class').where({ 'id': idClass }) == 0) return res.status(500).send({ message: 'No class records were found!' });
+        if (await knex('class').where({ id: idclass }) == 0) return res.status(500).send({ message: 'No class records were found!' });
 
-        await knex('class').where({ 'id': idClass }).del();
+        await knex('class').where({ id: idclass }).del();
 
         return res.status(201).send({ message: 'Class deleted!' });
     } catch (error) {

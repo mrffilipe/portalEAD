@@ -38,7 +38,7 @@ exports.index = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        let id = req.params.id;
+        let id = req.params.idmixclass;
         let userId = await req.userData.id;
         let { listName } = req.body;
 
@@ -55,7 +55,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const id = req.params.id;
+        const id = req.params.idmixclass;
         const userId = await req.userData.id;
 
         if (await knex('classlist').where({ 'id': id, '_idUser': userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });

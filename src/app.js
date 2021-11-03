@@ -46,9 +46,10 @@ const authRoutes = require('./routes/authRoutes');
 
 /* Use routes */
 app.use('/test', (req, res) => res.send('ok'));
-app.use(noAuthRoutes);
-app.use(require('./middlewares/auth'));
-app.use(authRoutes);
+//app.use(noAuthRoutes);
+//app.use(require('./middlewares/auth'));
+//app.use(authRoutes);
+app.use(require('./routes/auth-routes'));
 
 app.listen(process.env.serverPORT || 8090, (err) => {
     if (err)
