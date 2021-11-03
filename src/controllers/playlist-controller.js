@@ -16,10 +16,10 @@ exports.store = async (req, res) => {
 
         await knex('classlist').insert({ _idUser: req.userData.id, listName: listName, fullName: `${userData.name} ${userData.lastName}` });
 
-        res.status(201).send({ message: 'Mix class created!' });
+        res.status(201).send({ message: 'Playlist created!' });
     } catch (error) {
         console.log(error);
-        res.status(500).send({ error: 'Mix class not created!' });
+        res.status(500).send({ error: 'Playlist not created!' });
     }
 }
 
@@ -27,18 +27,18 @@ exports.index = async (req, res) => {
     try {
         let listRegister = await knex.select('listName', 'fullName').from('classlist');
 
-        if (!listRegister) return res.status(500).send({ message: 'Mix list not found!' });
+        if (!listRegister) return res.status(500).send({ message: 'Playlist not found!' });
 
-        res.status(200).send({ message: 'Mix class listed!', listRegister });
+        res.status(200).send({ message: 'Playlist listed!', listRegister });
     } catch (error) {
         console.log(error);
-        res.status(500).send({ error: 'Mix class not listed!' });
+        res.status(500).send({ error: 'Playlist not listed!' });
     }
 }
 
 exports.update = async (req, res) => {
     try {
-        let id = req.params.idmixclass;
+        let id = req.params.idplaylist;
         let userId = await req.userData.id;
         let { listName } = req.body;
 
@@ -55,7 +55,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const id = req.params.idmixclass;
+        const id = req.params.idplaylist;
         const userId = await req.userData.id;
 
         if (await knex('classlist').where({ 'id': id, '_idUser': userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });

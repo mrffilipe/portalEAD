@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
 const authMiddleware = require('../middlewares/auth');
-const { mixClassRouterAuth } = require('./mixClass-route');
+const { playlistRouterAuth } = require('./playlist-route');
 
 router.use(authMiddleware);
-router.use('/mixclass', mixClassRouterAuth);
+router.use('/playlist', playlistRouterAuth);
 
 module.exports = router;
