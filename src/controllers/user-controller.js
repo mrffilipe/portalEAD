@@ -11,7 +11,7 @@ const generateToken = (params = {}) => {
 }
 
 exports.login = async (req, res, next) => {
-    if (req.params.opt == 'register') return next();
+    if (req.params.entry == 'register') return next();
     try {
         let { email, password } = req.body;
 

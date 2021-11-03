@@ -31,7 +31,7 @@ exports.index = async (req, res) => {
         return res.status(201).send(list);
     } catch (error) {
         console.log(error);
-        return res.status(500).send({ error: 'Class not cretated!' });
+        return res.status(500).send({ error: 'Class not listed!' });
     }
 }
 
