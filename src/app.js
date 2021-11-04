@@ -49,8 +49,7 @@ app.use('/test', (req, res) => res.send('ok'));
 app.use(indexRoutes);
 app.use(authRoutes);
 
-app.listen(process.env.serverPORT || 8090, (err) => {
-    if (err)
-        return console.log(err);
+app.listen(process.env.PORT || process.env.serverPORT || 8090, (err) => {
+    if (err) return console.log(err);
     console.log('App ok!');
 });
