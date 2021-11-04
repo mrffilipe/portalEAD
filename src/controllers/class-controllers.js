@@ -3,12 +3,16 @@ const knex = require('../config/db-sql');
 exports.store = async (req, res) => {
     try {
         let { idplaylist } = req.params;
-        let userId = await req.userData.id;
-        let { contentTitle, description } = req.body;
+        let { title, description } = req.body;
 
-        if (await knex('classlist').where({ id: idplaylist, _idUser: userId }) == 0) return res.status(500).send({ message: 'Class list not found!' });
+        if (await knex('classlist').where({ id: idplaylist }) == 0) return res.status(500).send({ message: 'Playlist not found!' });
 
-        await knex('class').insert({ classList_id: idplaylist, pathVideo: undefined, contentTitle: contentTitle });
+        await knex('class').insert({
+            classList_id: idplaylist,
+            pathVideo: '',
+            contentTitle: title,
+            description: description
+        });
 
         return res.status(201).send({ message: 'Class created!' });
     } catch (error) {
@@ -19,33 +23,25 @@ exports.store = async (req, res) => {
 
 exports.index = async (req, res) => {
     try {
-        const { idplaylist } = req.params;
-        const userId = await req.userData.id;
+        let { idplaylist } = req.params;
 
-        if (await knex('classlist').where({ id: idplaylist, _idUser: userId }) == 0) return res.status(500).send({ message: 'Class list not found!' });
+        let indexClasses = await knex('class').select('pathVideo', 'contentTitle', 'description').where({ classList_id: idplaylist });
 
-        const list = await knex('class').where({ classList_id: idplaylist });
+        if (indexClasses == 0) return res.status(500).send({ message: 'Classes were not found in this playlist!' })
 
-        if (list == 0) return res.status(500).send({ message: 'Classes not found!' });
-
-        return res.status(201).send(list);
+        return res.status(201).send({ message: 'Classes listed!', indexClasses });
     } catch (error) {
         console.log(error);
-        return res.status(500).send({ error: 'Class not listed!' });
+        return res.status(500).send({ error: 'Classes not listed!' });
     }
 }
 
 exports.update = async (req, res) => {
     try {
-        const { idplaylist, idclass } = req.params;
-        const userId = await req.userData.id;
-        const { contentTitle } = req.body;
+        let { idplaylist, idclass } = req.params;
+        let { title, description } = req.body;
 
-        if (await knex('classlist').where({ id: idplaylist, _idUser: userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
-
-        if (await knex('class').where({ id: idclass }) == 0) return res.status(500).send({ message: 'No class records were found!' });
-
-        await knex('class').where({ id: idclass }).update({ pathVideo: undefined, contentTitle: contentTitle });
+        if (await knex('class').where({ classList_id: idplaylist, id: idclass }).update({ 'contentTitle': title, 'description': description, 'pathVideo': 'link' }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
 
         return res.status(201).send({ message: 'Class updated!' });
     } catch (error) {
@@ -56,16 +52,11 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const { idplaylist, idclass } = req.params;
-        const userId = await req.userData.id;
+        let { idplaylist, idclass } = req.params;
 
-        if (await knex('classlist').where({ id: idplaylist, _idUser: userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
+        if (await knex('class').where({ classList_id: idplaylist, id: idclass }).del() == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
 
-        if (await knex('class').where({ id: idclass }) == 0) return res.status(500).send({ message: 'No class records were found!' });
-
-        await knex('class').where({ id: idclass }).del();
-
-        return res.status(201).send({ message: 'Class deleted!' });
+        return res.status(200).send({ message: 'Class deleted!' });
     } catch (error) {
         console.log(error);
         return res.status(500).send({ error: 'Class not deleted!' });

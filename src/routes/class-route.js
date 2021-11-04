@@ -10,8 +10,6 @@ classRouterAuth.route('/class/:idclass?')
     .put(classController.update)
     .delete(classController.delete);
 
-
-
 classRouter.route('/class/:idclass?')
     .get(classController.index);
 

@@ -5,16 +5,15 @@ const User = model('User');
 
 exports.store = async (req, res) => {
     try {
-        let userData = await User.findById(req.userData.id);
+        let { id, name, lastName } = await User.findById(req.userData.id);
 
-        if (!userData || userData == null) return res.status(500).send({ error: 'User not found!' });
+        if (!id || id == null) return res.status(500).send({ message: 'User not found!' });
 
-        let { listName } = req.body;
+        let { playlistName } = req.body;
 
-        if (!listName)
-            res.status(500).send({ message: 'List name cannot be empty!' });
+        if (!playlistName) return res.status(500).send({ message: 'Playlist name cannot be empty!' });
 
-        await knex('classlist').insert({ _idUser: req.userData.id, listName: listName, fullName: `${userData.name} ${userData.lastName}` });
+        await knex('classlist').insert({ _idUser: id, listName: playlistName, fullName: `${name} ${lastName}` });
 
         res.status(201).send({ message: 'Playlist created!' });
     } catch (error) {
@@ -25,11 +24,11 @@ exports.store = async (req, res) => {
 
 exports.index = async (req, res) => {
     try {
-        let listRegister = await knex.select('listName', 'fullName').from('classlist');
+        let allPlaylist = await knex.select('listName', 'fullName').from('classlist');
 
-        if (!listRegister) return res.status(500).send({ message: 'Playlist not found!' });
+        if (!allPlaylist) return res.status(500).send({ message: 'Playlist not found!' });
 
-        res.status(200).send({ message: 'Playlist listed!', listRegister });
+        res.status(200).send({ message: 'Playlist listed!', allPlaylist });
     } catch (error) {
         console.log(error);
         res.status(500).send({ error: 'Playlist not listed!' });
@@ -38,33 +37,31 @@ exports.index = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        let id = req.params.idplaylist;
-        let userId = await req.userData.id;
-        let { listName } = req.body;
+        let { idplaylist } = req.params;
+        let { id } = await req.userData;
+        let { playlistName } = req.body;
 
-        if (await knex('classlist').where({ 'id': id, '_idUser': userId }).update('listName', listName) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
+        if (!playlistName) return res.status(500).send({ message: 'Playlist name cannot be empty!' });
 
-        await knex('classlist').where({ 'id': id, '_idUser': userId }).update('listName', listName);
+        if (await knex('classlist').where({ id: idplaylist, _idUser: id }).update('listName', playlistName) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
 
-        return res.status(200).send({ message: 'Class list updated!' });
+        return res.status(200).send({ message: 'Playlist updated!' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send({ error: 'Class list not updated!' });
+        return res.status(500).send({ error: 'Playlist not updated!' });
     }
 }
 
 exports.delete = async (req, res) => {
     try {
-        const id = req.params.idplaylist;
-        const userId = await req.userData.id;
+        let { idplaylist } = req.params;
+        let { id } = await req.userData;
 
-        if (await knex('classlist').where({ 'id': id, '_idUser': userId }) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
+        if (await knex('classlist').where({ id: idplaylist, _idUser: id }).del() == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
 
-        await knex('classlist').where({ 'id': id, '_idUser': userId }).del();
-
-        return res.status(200).send({ message: 'Class list deleted!' });
+        return res.status(200).send({ message: 'Playlist deleted!' });
     } catch (error) {
         console.log(error);
-        return res.status(500).send({ error: 'Class list not deleted!' });
+        return res.status(500).send({ error: 'Playlist not deleted!' });
     }
 }
