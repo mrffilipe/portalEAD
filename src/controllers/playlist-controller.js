@@ -26,7 +26,7 @@ exports.index = async (req, res) => {
     try {
         let allPlaylist = await knex.select('listName', 'fullName').from('classlist');
 
-        if (!allPlaylist) return res.status(500).send({ message: 'Playlist not found!' });
+        if (allPlaylist == 0) return res.status(500).send({ message: 'Playlist not found!' });
 
         res.status(200).send({ message: 'Playlist listed!', allPlaylist });
     } catch (error) {
