@@ -13,7 +13,7 @@ exports.store = async (req, res) => {
 
         if (!playlistName) return res.status(500).send({ message: 'Playlist name cannot be empty!' });
 
-        await knex('classlist').insert({ _idUser: id, listName: playlistName, fullName: `${name} ${lastName}` });
+        await knex('playlist').insert({ _idUser: id, name: playlistName, nameUser: `${name} ${lastName}` });
 
         res.status(201).send({ message: 'Playlist created!' });
     } catch (error) {
@@ -24,7 +24,7 @@ exports.store = async (req, res) => {
 
 exports.index = async (req, res) => {
     try {
-        let allPlaylist = await knex.select('listName', 'fullName').from('classlist');
+        let allPlaylist = await knex.select('name', 'nameUser').from('playlist');
 
         if (allPlaylist == 0) return res.status(500).send({ message: 'Playlist not found!' });
 
@@ -43,7 +43,7 @@ exports.update = async (req, res) => {
 
         if (!playlistName) return res.status(500).send({ message: 'Playlist name cannot be empty!' });
 
-        if (await knex('classlist').where({ id: idplaylist, _idUser: id }).update('listName', playlistName) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
+        if (await knex('playlist').where({ id: idplaylist, _idUser: id }).update('name', playlistName) == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
 
         return res.status(200).send({ message: 'Playlist updated!' });
     } catch (error) {
@@ -57,7 +57,7 @@ exports.delete = async (req, res) => {
         let { idplaylist } = req.params;
         let { id } = await req.userData;
 
-        if (await knex('classlist').where({ id: idplaylist, _idUser: id }).del() == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
+        if (await knex('playlist').where({ id: idplaylist, _idUser: id }).del() == 0) return res.status(500).send({ message: 'No records were found with the data entered!' });
 
         return res.status(200).send({ message: 'Playlist deleted!' });
     } catch (error) {
