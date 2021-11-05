@@ -45,7 +45,7 @@ const indexRoutes = require('./routes/index-routes')
 const authRoutes = require('./routes/auth-routes');
 
 /* Use routes */
-app.use('/test', (req, res) => res.send('Mister seu palhaço. Hehehehheh jovi'));
+app.use('/test/:nome?', (req, res) => res.send(`${req.params.nome} seu palhaço. Hehehehheh jovi`));
 app.use(indexRoutes);
 app.use(authRoutes);
 
