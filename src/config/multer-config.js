@@ -10,9 +10,7 @@ const storageTypes = {
         filename: (req, file, cb) => {
             crypto.randomBytes(16, (err, hash) => {
                 if (err) cb(err);
-
-                file.key = `${hash.toString("hex")}-${file.originalname}`;
-
+                file.key = `${hash.toString('hex')}-${file.originalname}`;
                 cb(null, file.key);
             });
         }
@@ -22,7 +20,7 @@ const storageTypes = {
 
 module.exports = {
     dest: path.resolve(__dirname, "..", "..", "tmp", "uploads"),
-    storage: storageTypes[process.env.STORAGE_TYPES],
+    storage: storageTypes[process.env.STORAGE_TYPE],
     limits: {
         fileSize: 2 * 1024 * 1024
     },
@@ -40,4 +38,4 @@ module.exports = {
             cb(new Error("Invalid file type."));
         }
     }
-};
+}

@@ -25,12 +25,12 @@ app.use(function (req, res, next) {
 });
 
 app.use(
-    "/files",
+    "/file",
     express.static(path.resolve(__dirname, "..", "tmp", "uploads"))
 );
 
 /* MongoDB connect */
-mongoose.connect(process.env.connectMongoDB, {
+mongoose.connect(process.env.MONGO_DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 },
@@ -45,11 +45,18 @@ const indexRoutes = require('./routes/index-routes')
 const authRoutes = require('./routes/auth-routes');
 
 /* Use routes */
-app.use('/test/:nome?', (req, res) => res.send(`${req.params.nome} seu paiaço. Hehehehheh jovi`));
+app.use('/', (req, res) => {
+    res.send({
+        'API': {
+            status: 'working',
+            version: 'v1.0.0'
+        }
+    });
+});
 app.use(indexRoutes);
 app.use(authRoutes);
 
-app.listen(process.env.PORT || process.env.serverPORT || 8090, (err) => {
+app.listen(process.env.PORT || process.env.LOCALPORT || 8090, (err) => {
     if (err) return console.log(err);
     console.log('App ok!');
 });

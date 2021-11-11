@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = mongoose.model('User');
 
 const generateToken = (params = {}) => {
-    return jwt.sign(params, process.env.secretKey, {
+    return jwt.sign(params, process.env.SECRET_KEY, {
         expiresIn: 86400
     });
 }
