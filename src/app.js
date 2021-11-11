@@ -45,7 +45,7 @@ const indexRoutes = require('./routes/index-routes')
 const authRoutes = require('./routes/auth-routes');
 
 /* Use routes */
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
     res.send({
         'API': {
             status: 'working',
