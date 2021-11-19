@@ -25,7 +25,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(
-    "/file",
+    "/files",
     express.static(path.resolve(__dirname, "..", "tmp", "uploads"))
 );
 
@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
 app.use(indexRoutes);
 app.use(authRoutes);
 
-app.listen(process.env.PORT || process.env.LOCALPORT || 8090, (err) => {
+app.listen(process.env.PORT || process.env.LOCAL_PORT || 8090, (err) => {
     if (err) return console.log(err);
     console.log('App ok!');
 });
