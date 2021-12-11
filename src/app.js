@@ -14,7 +14,7 @@ app.use(
     urlencoded({
         extended: false
     }),
-    cors()
+    //cors()
 );
 
 // Habilita o CORS
