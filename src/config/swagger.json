@@ -6,7 +6,7 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/users": {
+        "/auth": {
             "post": {
                 "summary": "Login do usuário",
                 "description": "Este recurso retorna um token de autenticação.",
@@ -69,7 +69,7 @@
                 }
             }
         },
-        "/users/register": {
+        "/auth/register": {
             "post": {
                 "summary": "Registro do usuário",
                 "description": "Este recurso registra um usuário.",
@@ -161,7 +161,12 @@
                     "401": {
                         "description": "Não autorizado."
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "get": {
                 "summary": "Lista playlists",
@@ -242,6 +247,11 @@
                             "type": "integer"
                         }
                     }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
                 ]
             },
             "delete": {
@@ -273,6 +283,11 @@
                         "schema": {
                             "type": "integer"
                         }
+                    }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -324,6 +339,11 @@
                         "schema": {
                             "type": "integer"
                         }
+                    }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
                 ]
             },
@@ -424,6 +444,11 @@
                             "type": "integer"
                         }
                     }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
                 ]
             },
             "delete": {
@@ -468,7 +493,21 @@
                             "type": "integer"
                         }
                     }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
                 ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
             }
         }
     }
