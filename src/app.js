@@ -7,15 +7,14 @@ require('./config/db-sql');
 const cors = require('cors')
 const app = express();
 
-app.use(cors());
-
 app.use(
     json({
         limit: '5mb'
     }),
     urlencoded({
         extended: false
-    })
+    }),
+    cors()
 );
 
 // Habilita o CORS
