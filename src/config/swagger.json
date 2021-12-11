@@ -101,7 +101,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Criado.",
+                        "description": "Registrado.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -119,9 +119,162 @@
                         "description": "Este usuário já existe."
                     },
                     "400": {
-                        "description": "Não foi possível criar o usuário."
+                        "description": "Não foi possível registrar o usuário."
                     }
                 }
+            }
+        },
+        "/playlist/{idplaylist}": {
+            "post": {
+                "summary": "Registra uma playlist",
+                "description": "Este recurso registra uma playlist.",
+                "tags": [
+                    "Playlist"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "playlistName": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registrado."
+                    },
+                    "404": {
+                        "description": "Usuario não encontrado."
+                    },
+                    "400": {
+                        "description": "Não foi possível registrar o usuário."
+                    },
+                    "500": {
+                        "description": "O nome da playlist, não pode estar vazio."
+                    },
+                    "401": {
+                        "description": "Não autorizado."
+                    }
+                }
+            },
+            "get": {
+                "summary": "Lista playlists",
+                "description": "Este recurso lista as playlists cadastradas.",
+                "tags": [
+                    "Playlist"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "nameUser": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Não foi encontrado nenhuma playlist."
+                    },
+                    "500": {
+                        "description": "Não foi possível listar a(s) playlist(s)."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualiza uma playlist",
+                "description": "Este recurso atualiza uma playlist.",
+                "tags": [
+                    "Playlist"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "playlistName": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Atualizado."
+                    },
+                    "404": {
+                        "description": "Playlist não encontrada."
+                    },
+                    "406": {
+                        "description": "O nome da playlist, não pode estar vazio."
+                    },
+                    "401": {
+                        "description": "Não autorizado."
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idplaylist",
+                        "in": "path",
+                        "description": "Parâmetro referente ao ID da playlist.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Deleta uma playlist",
+                "description": "Este recurso deleta uma playlist.",
+                "tags": [
+                    "Playlist"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deletado."
+                    },
+                    "404": {
+                        "description": "Playlist não encontrada."
+                    },
+                    "401": {
+                        "description": "Não autorizado."
+                    },
+                    "500": {
+                        "description": "Não foi possível deletar a playlist."
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idplaylist",
+                        "in": "path",
+                        "description": "Parâmetro referente ao ID da playlist.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ]
             }
         }
     }
