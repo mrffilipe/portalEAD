@@ -64,7 +64,7 @@
                         "description": "Senha inválida."
                     },
                     "400": {
-                        "description": "Falha no login"
+                        "description": "Falha no login."
                     }
                 }
             }
@@ -199,8 +199,8 @@
                 }
             },
             "put": {
-                "summary": "Atualiza uma playlist",
-                "description": "Este recurso atualiza uma playlist.",
+                "summary": "Atualiza uma playlist pelo ID",
+                "description": "Este recurso atualiza uma playlist pelo ID.",
                 "tags": [
                     "Playlist"
                 ],
@@ -245,8 +245,8 @@
                 ]
             },
             "delete": {
-                "summary": "Deleta uma playlist",
-                "description": "Este recurso deleta uma playlist.",
+                "summary": "Deleta uma playlist pelo ID",
+                "description": "Este recurso deleta uma playlist pelo ID.",
                 "tags": [
                     "Playlist"
                 ],
@@ -269,6 +269,200 @@
                         "name": "idplaylist",
                         "in": "path",
                         "description": "Parâmetro referente ao ID da playlist.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ]
+            }
+        },
+        "/playlist/{idplaylist}/class/{idclass}": {
+            "post": {
+                "summary": "Registra uma aula",
+                "description": "Este recurso registra uma aula.",
+                "tags": [
+                    "Class"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registrado."
+                    },
+                    "404": {
+                        "description": "Playlist não encontrada."
+                    },
+                    "500": {
+                        "description": "Não foi possível registrar a aula."
+                    },
+                    "401": {
+                        "description": "Não autorizado."
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idplaylist",
+                        "in": "path",
+                        "description": "Parâmetro referente ao ID da playlist.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ]
+            },
+            "get": {
+                "summary": "Lista aulas",
+                "description": "Este recurso lista as aulas cadastradas.",
+                "tags": [
+                    "Class"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "pathVideo": {
+                                                "type": "string"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Não foi encontrado nenhuma aula."
+                    },
+                    "500": {
+                        "description": "Não foi possível listar a(s) aula(s)."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualiza uma aula pelo ID",
+                "description": "Este recurso atualiza uma aula pelo ID.",
+                "tags": [
+                    "Class"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Atualizado."
+                    },
+                    "404": {
+                        "description": "Playlist não encontrada."
+                    },
+                    "406": {
+                        "description": "Não foram encontrado dados com as informações fornecidas."
+                    },
+                    "401": {
+                        "description": "Não autorizado."
+                    },
+                    "500": {
+                        "description": "Não foi possível atualizar a aula."
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idplaylist",
+                        "in": "path",
+                        "description": "Parâmetro referente ao ID da playlist.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "idclass",
+                        "in": "path",
+                        "description": "Parâmetro referente ao ID da aula.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Deleta uma aula por ID",
+                "description": "Este recurso deleta uma aula pelo ID.",
+                "tags": [
+                    "Class"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deletado."
+                    },
+                    "404": {
+                        "description": "Playlist não encontrada."
+                    },
+                    "406": {
+                        "description": "Não foram encontrado dados com as informações fornecidas."
+                    },
+                    "401": {
+                        "description": "Não autorizado."
+                    },
+                    "500": {
+                        "description": "Não foi possível deletar a aula."
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idplaylist",
+                        "in": "path",
+                        "description": "Parâmetro referente ao ID da playlist.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "idclass",
+                        "in": "path",
+                        "description": "Parâmetro referente ao ID da aula.",
                         "required": true,
                         "schema": {
                             "type": "integer"
