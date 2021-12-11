@@ -383,7 +383,18 @@
                     "500": {
                         "description": "Não foi possível listar a(s) aula(s)."
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "name": "idplaylist",
+                        "in": "path",
+                        "description": "Parâmetro referente ao ID da playlist.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ]
             },
             "put": {
                 "summary": "Atualiza uma aula pelo ID",
