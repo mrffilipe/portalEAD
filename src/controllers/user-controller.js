@@ -17,10 +17,10 @@ exports.login = async (req, res, next) => {
 
         let user = await User.findOne({ email }).select('+password');
         if (!user)
-            return res.status(400).send({ error: 'User not found!' });
+            return res.status(404).send({ error: 'User not found!' });
 
         if (!await bcrypt.compare(password, user.password))
-            return res.status(400).send({ error: 'Invalid password' });
+            return res.status(403).send({ error: 'Invalid password' });
 
         user.password = undefined;
 
@@ -42,7 +42,7 @@ exports.register = async (req, res) => {
         let { name, lastName, email, password, admin } = req.body;
 
         if (await User.findOne({ email: email }))
-            return res.status(400).send('User already exists!');
+            return res.status(403).send('User already exists!');
 
         password = await bcrypt.hash(password, 10);
 
