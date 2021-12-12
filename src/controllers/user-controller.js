@@ -42,7 +42,7 @@ exports.register = async (req, res) => {
         let { name, lastName, email, password, admin } = req.body;
 
         if (await User.findOne({ email: email }))
-            return res.status(403).send('User already exists!');
+            return res.status(403).send({ message: 'User already exists!' });
 
         password = await bcrypt.hash(password, 10);
 
